@@ -31,23 +31,33 @@ app.get('/users/:userId', (req, res) => {
     res.send(`User ID: ${userId}`);
 });
 
-app.get('/users/:userId/photo', (req, res) => {
+async function fileReadWrapper(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, (error, data) => {
+            if(data) {
+                resolve(data);
+            }
+            if(error) {
+                reject(error);
+            }
+        });
+    });
+};
+
+async function getImageOfUser(userId) {
+    const imagePath = join(__dirname, 'images', 'profile_photo', user_to_image_map[userId]);
+    const image = await fileReadWrapper(imagePath);
+    console.log("Fetched image of user successfully");
+    return image;
+}
+
+app.get('/users/:userId/photo', async (req, res) => {
     const userId = req.params.userId;
     console.log(`Received photo request for userId: ${userId}`);
     if (registeredUserIds.includes(userId)) {
+        const image  = await getImageOfUser(userId);
         res.contentType('image/jpg');
-        const imagePath = join(__dirname, 'images', 'profile_photo', user_to_image_map[userId]);
-        const image = fs.readFile(imagePath, (error, data) => {
-            if(data) {
-                console.log("Sending image as response to the request inside callback");
-                res.send(data);    
-            }
-            if(error) {
-                console.log(`Error in reading file: ${error}`);
-                res.sendStatus(500);
-            }
-        });
-        console.log("Request is still pending...");
+        res.send(image);
     } else{
         res.sendStatus(404);
     }
