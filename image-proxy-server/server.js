@@ -37,14 +37,22 @@ app.get('/users/:userId/photo', (req, res) => {
     if (registeredUserIds.includes(userId)) {
         res.contentType('image/jpg');
         const imagePath = join(__dirname, 'images', 'profile_photo', user_to_image_map[userId]);
-        const image = fs.readFileSync(imagePath);
-        console.log(`Found image for user with ID: ${userId}`);
-        // Send the image as the response
-         res.send(image);
+        const image = fs.readFile(imagePath, (error, data) => {
+            if(data) {
+                console.log("Sending image as response to the request inside callback");
+                res.send(data);    
+            }
+            if(error) {
+                console.log(`Error in reading file: ${error}`);
+                res.sendStatus(500);
+            }
+        });
+        console.log("Request is still pending...");
     } else{
         res.sendStatus(404);
     }
 });
+
 
 // Start the server
 app.listen(port, () => {
