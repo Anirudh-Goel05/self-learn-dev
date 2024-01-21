@@ -1,4 +1,18 @@
 public class SortingDemo {
+    
+    class Employee {
+        int salary;
+        int age;
+        Employee(int salary, int age) {
+            this.salary = salary;
+            this.age = age;
+        };
+        @Override
+        public String toString() {
+            return this.salary + " :" + this.age;
+        }
+    };
+    
     private static void main () {
         int[] intArray = {5, 2, 8, 1, 6};
 
