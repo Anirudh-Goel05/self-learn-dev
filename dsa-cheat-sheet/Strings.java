@@ -18,6 +18,11 @@ public class StringDemo {
         String str2 = String.valueOf(charArray2);
         String str3 = new String(charArray2);
 
+        // SUBSTRING
+        String str = "Hello, World!";
+        String substring2 = str.substring(7, 12); // Extracts from index 7 to 11 (exclusive)
+        System.out.println(substring2); // Output: World
+
         char ch = 'a';
         sb.append(ch); // Appends the character to the end of the StringBuilder
 
