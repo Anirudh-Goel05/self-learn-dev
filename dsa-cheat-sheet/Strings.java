@@ -8,8 +8,7 @@ public class StringDemo {
         char ch = s.charAt(1);
 
 
-        StringBuilder sb = new StringBuilder();
-
+        
         // CONVERT TO CHAR ARRAY
         char[] charArray = str.toCharArray();
 
@@ -23,6 +22,7 @@ public class StringDemo {
         String substring2 = str.substring(7, 12); // Extracts from index 7 to 11 (exclusive)
         System.out.println(substring2); // Output: World
 
+        StringBuilder sb = new StringBuilder();
         char ch = 'a';
         sb.append(ch); // Appends the character to the end of the StringBuilder
 
