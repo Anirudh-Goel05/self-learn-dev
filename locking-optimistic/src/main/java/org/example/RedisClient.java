@@ -30,6 +30,12 @@ public class RedisClient {
 
         if ("OK".equals(response)) {
             System.out.println("Lock acquired with ID: " + secretValue);
+        String uniqueId = UUID.randomUUID().toString(); // Generate a unique ID for this lock
+        SetParams params = new SetParams().nx().px(2000);
+        String response = jedis.set(key, secretValue.toString(), params);
+
+        if ("OK".equals(response)) {
+            System.out.println("Lock acquired with ID: " + uniqueId);
             return true; // Lock acquired successfully
         }
        return false;
@@ -46,6 +52,7 @@ public class RedisClient {
                         "end";
         // In the above script we allow to delete the key only if the value provided matches the existing value,
         // this ensures that only the client who acquired the lock (and is hence aware of the secret value) can release it
+
         Object result = jedis.eval(luaScript, 1, key, secretValue.toString());
         if (result.equals(1L)) {
             System.out.println("Lock released: " + secretValue);
