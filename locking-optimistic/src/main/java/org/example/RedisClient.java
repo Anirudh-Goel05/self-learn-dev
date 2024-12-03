@@ -30,12 +30,11 @@ public class RedisClient {
 
         if ("OK".equals(response)) {
             System.out.println("Lock acquired with ID: " + secretValue);
-        String uniqueId = UUID.randomUUID().toString(); // Generate a unique ID for this lock
         SetParams params = new SetParams().nx().px(2000);
         String response = jedis.set(key, secretValue.toString(), params);
 
         if ("OK".equals(response)) {
-            System.out.println("Lock acquired with ID: " + uniqueId);
+            System.out.println("Lock acquired with ID: " + secretValue);
             return true; // Lock acquired successfully
         }
        return false;
